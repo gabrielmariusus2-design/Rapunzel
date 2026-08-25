@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Pentru iubita mea ❤️</title>
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='75' font-size='80'%3E❤️%3C/text%3E%3C/svg%3E">
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: #ffe6f0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #d40047;
+      overflow: hidden;
+      position: relative;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: pan-y;
+    }
+
+    html {
+      height: -webkit-fill-available;
+    }
+
+    #introMessage {
+      font-size: 1.4em;
+      margin: 0 20px 30px;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+      max-width: 90%;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+
+    #startBtn {
+      background: #ff477e;
+      color: white;
+      border: none;
+      padding: 16px 32px;
+      font-size: 1.2em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      -webkit-tap-highlight-color: transparent;
+      box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+    }
+
+    #startBtn:active {
+      background: #d40047;
+      transform: scale(0.95);
+    }
+
+    #scratchInstruction {
+      margin: 20px 20px 0;
+      font-size: 1.1em;
+      opacity: 0;
+      transition: opacity 0.5s;
+      max-width: 90%;
+    }
+
+    #scratchArea {
+      display: none;
+      position: relative;
+      width: min(320px, 85vw);
+      height: 180px;
+      margin-top: 20px;
+      touch-action: none;
+    }
+
+    #hiddenMessage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1em;
+      color: #d40047;
+      font-weight: bold;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 1;
+      line-height: 1.4;
+    }
+
+    #arrow {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: #d40047;
+      animation: bounce 2s infinite;
+      z-index: 1;
+    }
+
+    @keyframes bounce {
+      0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+      40% { transform: translateX(-50%) translateY(-10px); }
+      60% { transform: translateX(-50%) translateY(-5px); }
+    }
+
+    #scratchCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 2;
+      border-radius: 12px;
+      touch-action: none;
+    }
+
+    #roseFlower {
+      display: none;
+      margin-top: 30px;
+      position: relative;
+      width: 120px;
+      height: 120px;
+      cursor: pointer;
+      transform-origin: center;
+      transition: transform 0.3s ease;
+    }
+
+    #roseFlower:active {
+      transform: scale(1.1) rotate(3deg);
+    }
+
+    .rose-petal {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ff477e 0%, #d40047 100%);
+      border-radius: 50% 50% 50% 0;
+      transform-origin: bottom right;
+      box-shadow: 0 2px 6px rgba(212, 0, 71, 0.3);
+    }
+
+    .rose-petal:nth-child(1) { transform: rotate(0deg) translate(30px, -10px); }
+    .rose-petal:nth-child(2) { transform: rotate(45deg) translate(30px, -10px); background: linear-gradient(135deg, #ff6b9d 0%, #ff477e 100%); }
+    .rose-petal:nth-child(3) { transform: rotate(90deg) translate(30px, -10px); background: linear-gradient(135deg, #ff85b3 0%, #ff6b9d 100%); }
+    .rose-petal:nth-child(4) { transform: rotate(135deg) translate(30px, -10px); background: linear-gradient(135deg, #ff9ec7 0%, #ff85b3 100%); }
+    .rose-petal:nth-child(5) { transform: rotate(180deg) translate(30px, -10px); background: linear-gradient(135deg, #ffb7d9 0%, #ff9ec7 100%); }
+    .rose-petal:nth-child(6) { transform: rotate(225deg) translate(30px, -10px); background: linear-gradient(135deg, #ffcfea 0%, #ffb7d9 100%); }
+    .rose-petal:nth-child(7) { transform: rotate(270deg) translate(30px, -10px); background: linear-gradient(135deg, #ffdff0 0%, #ffcfea 100%); }
+    .rose-petal:nth-child(8) { transform: rotate(315deg) translate(30px, -10px); background: linear-gradient(135deg, #ffe6f0 0%, #ffdff0 100%); }
+
+    .heart {
+      position: fixed;
+      font-size: 20px;
+      opacity: 0;
+      animation: float 6s infinite ease-in-out;
+      color: #ff477e;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+      10%, 90% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    #poetryPaper {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(340px, 90vw);
+      max-height: 80vh;
+      max-height: 80dvh;
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe6f0 100%);
+      padding: 30px 20px;
+      border-radius: 25px;
+      box-shadow: 
+        0 15px 35px rgba(212, 0, 71, 0.4),
+        inset 0 0 20px rgba(255, 71, 126, 0.1);
+      z-index: 100;
+      text-align: center;
+      color: #d40047;
+      font-size: 1em;
+      line-height: 1.5;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 3px solid #ff477e;
+      opacity: 0;
+    }
+
+    #closePoetry {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #ff477e;
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 101;
+      transition: transform 0.2s, background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #closePoetry:active {
+      background: #d40047;
+      transform: scale(0.95);
+    }
+
+    #poetryTitle {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-bottom: 20px;
+      color: #d40047;
+      text-decoration: none;
+      text-shadow: 2px 2px 4px rgba(255, 71, 126, 0.2);
+      padding-right: 30px;
+    }
+
+    #poetryContent {
+      margin: 0;
+      white-space: pre-line;
+      text-align: left;
+      padding: 0 10px 60px;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      font-size: 0.95em;
+    }
+
+    #finalArrow {
+      display: none;
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #ff477e;
+      color: white;
+      border: none;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 24px;
+      z-index: 102;
+      animation: bounce 2s infinite;
+      box-shadow: 0 4px 15px rgba(255, 71, 126, 0.5);
+    }
+
+    #finalArrow:active {
+      transform: scale(0.95);
+    }
+
+    @keyframes gentleReveal {
+      0% { 
+        transform: translate(-50%, -50%) scale(0.3);
+        opacity: 0;
+        filter: blur(10px);
+      }
+      60% { 
+        transform: translate(-50%, -50%) scale(1.05);
+        opacity: 1;
+        filter: blur(0px);
+      }
+      80% { 
+        transform: translate(-50%, -50%) scale(0.98);
+      }
+      100% { 
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        filter: blur(0px);
+      }
+    }
+
+    #finalMessage {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(300px, 85vw);
+      background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+      padding: 30px 20px;
+      border-radius: 25px;
+      box-shadow: 
+        0 15px 35px rgba(212, 0, 71, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      z-index: 103;
+      text-align: center;
+      color: #d40047;
+      font-size: 1.2em;
+      line-height: 1.5;
+      border: 3px solid #ff477e;
+      opacity: 0;
+    }
+
+    #finalHeart {
+      font-size: 48px;
+      margin-top: 15px;
+      color: #ff477e;
+      text-shadow: 0 2px 8px rgba(212, 0, 71, 0.3);
+    }
+
+    #journeyPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(300px, 85vw);
+      background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+      padding: 30px 20px;
+      border-radius: 25px;
+      box-shadow: 
+        0 15px 35px rgba(212, 0, 71, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      z-index: 104;
+      text-align: center;
+      color: #d40047;
+      font-size: 1.1em;
+      line-height: 1.5;
+      border: 3px solid #ff477e;
+      opacity: 0;
+    }
+
+    #continueJourneyBtn {
+      background: #ff477e;
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+    }
+
+    #continueJourneyBtn:active {
+      background: #d40047;
+      transform: scale(0.95);
+    }
+
+    #storyPage {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(340px, 90vw);
+      max-height: 80vh;
+      max-height: 80dvh;
+      background: linear-gradient(135deg, #fdf6e3 0%, #f5e6c8 100%);
+      padding: 30px 22px;
+      border-radius: 20px;
+      box-shadow: 
+        0 15px 35px rgba(90, 60, 20, 0.4),
+        inset 0 0 20px rgba(180, 130, 60, 0.15);
+      z-index: 105;
+      text-align: left;
+      color: #5a3c14;
+      font-size: 1em;
+      line-height: 1.6;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 3px solid #b4823c;
+      opacity: 0;
+    }
+
+    #storyTitle {
+      font-size: 1.4em;
+      font-weight: bold;
+      margin-bottom: 18px;
+      color: #8a5a1e;
+      text-align: center;
+      font-family: 'Georgia', serif;
+      text-shadow: 1px 1px 2px rgba(138, 90, 30, 0.2);
+    }
+
+    #storyContent {
+      margin: 0;
+      white-space: pre-line;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+    }
+
+    #closeStory {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #b4823c;
+      color: white;
+      border: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: bold;
+      z-index: 106;
+      transition: transform 0.2s, background 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #closeStory:active {
+      background: #8a5a1e;
+      transform: scale(0.95);
+    }
+
+    #helpRapunzelBtn {
+      background: #b4823c;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      font-size: 0.95em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(180, 130, 60, 0.4);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-style: normal;
+    }
+
+    #helpRapunzelBtn:active {
+      background: #8a5a1e;
+      transform: scale(0.95);
+    }
+
+    /* ===== JOC: RUNNER ===== */
+    #gameScreen {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background: linear-gradient(180deg, #1a1330 0%, #2c1f4a 40%, #1e3320 100%);
+      z-index: 110;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      touch-action: none;
+    }
+
+    #gameUI {
+      width: min(420px, 94vw);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      padding: 0 4px;
+    }
+
+    #heartsDisplay {
+      font-size: 1.3em;
+      letter-spacing: 2px;
+    }
+
+    #progressBarContainer {
+      flex: 1;
+      max-width: 200px;
+      margin-left: 12px;
+      height: 12px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.3);
+    }
+
+    #progressBarFill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ffd27a, #ff477e);
+      transition: width 0.1s linear;
+    }
+
+    #gameCanvas {
+      width: min(420px, 94vw);
+      height: 55vh;
+      max-height: 380px;
+      background: transparent;
+      border-radius: 16px;
+      display: block;
+    }
+
+    #gameInstructions {
+      color: #ffe6f0;
+      font-size: 0.95em;
+      margin-top: 10px;
+      opacity: 0.9;
+      text-align: center;
+      max-width: 90%;
+    }
+
+    #gameToast {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0,0,0,0.7);
+      color: #fff;
+      padding: 14px 22px;
+      border-radius: 14px;
+      font-size: 1em;
+      display: none;
+      z-index: 111;
+      text-align: center;
+      max-width: 80%;
+    }
+
+    #castleWinPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(340px, 90vw);
+      max-height: 80vh;
+      max-height: 80dvh;
+      background: linear-gradient(135deg, #fff0f5 0%, #ffe6f0 100%);
+      padding: 30px 20px;
+      border-radius: 25px;
+      box-shadow: 
+        0 15px 35px rgba(212, 0, 71, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      z-index: 112;
+      text-align: center;
+      color: #d40047;
+      font-size: 1.05em;
+      line-height: 1.6;
+      border: 3px solid #ff477e;
+      opacity: 0;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    #castleWinContent {
+      display: block;
+      text-align: left;
+      white-space: pre-line;
+      font-family: 'Georgia', serif;
+      font-style: italic;
+      margin-top: 6px;
+    }
+
+    #castleWinPopup .castleIcon {
+      font-size: 48px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    #closeCastleWin {
+      margin-top: 18px;
+      background: #ff477e;
+      color: white;
+      border: none;
+      padding: 12px 26px;
+      font-size: 1em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+    }
+
+    #closeCastleWin:active {
+      background: #d40047;
+      transform: scale(0.95);
+    }
+
+    #gameRulesPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(300px, 85vw);
+      background: linear-gradient(135deg, #ffffff 0%, #fff0f5 100%);
+      padding: 30px 22px;
+      border-radius: 25px;
+      box-shadow: 
+        0 15px 35px rgba(212, 0, 71, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      z-index: 113;
+      text-align: center;
+      color: #d40047;
+      font-size: 1.05em;
+      line-height: 1.5;
+      border: 3px solid #ff477e;
+      opacity: 0;
+    }
+
+    #startAdventureBtn {
+      margin-top: 18px;
+      background: #ff477e;
+      color: white;
+      border: none;
+      padding: 14px 26px;
+      font-size: 1em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+    }
+
+    #startAdventureBtn:active {
+      background: #d40047;
+      transform: scale(0.95);
+    }
+
+    #countdownOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background: rgba(10, 5, 20, 0.55);
+      z-index: 114;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #countdownNumber {
+      font-size: 5em;
+      color: #ffe6f0;
+      font-weight: bold;
+      text-shadow: 0 4px 20px rgba(255, 71, 126, 0.8);
+    }
+
+    #gameOverPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      width: min(300px, 85vw);
+      background: linear-gradient(135deg, #ffffff 0%, #ffe6f0 100%);
+      padding: 30px 22px;
+      border-radius: 25px;
+      box-shadow: 
+        0 15px 35px rgba(212, 0, 71, 0.4),
+        inset 0 0 20px rgba(255, 255, 255, 0.3);
+      z-index: 115;
+      text-align: center;
+      color: #d40047;
+      font-size: 1.05em;
+      line-height: 1.5;
+      border: 3px solid #ff477e;
+      opacity: 0;
+    }
+
+    #retryGameBtn {
+      margin-top: 18px;
+      background: #ff477e;
+      color: white;
+      border: none;
+      padding: 14px 26px;
+      font-size: 1em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: transform 0.2s, background 0.3s;
+      box-shadow: 0 4px 15px rgba(255, 71, 126, 0.4);
+    }
+
+    #retryGameBtn:active {
+      background: #d40047;
+      transform: scale(0.95);
+    }
+
+    #ringPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      z-index: 116;
+      text-align: center;
+      opacity: 0;
+    }
+
+    #ringPopup .ringEmoji {
+      font-size: 7em;
+      display: block;
+      filter: drop-shadow(0 6px 18px rgba(212, 0, 71, 0.5));
+    }
+  </style>
+</head>
+<body>
+  <div id="introMessage">Hei, ai așteptat să-ți fac o aplicație pentru tine? Iat-o, aici este! ❤️</div>
+  <button id="startBtn">Vezi ce ți-am pregătit</button>
+  <div id="scratchInstruction">Răzuiește aici ca să vezi o surpriză pe care ți-am pregătit-o</div>
+  
+  <div id="scratchArea">
+    <div id="hiddenMessage">Trebuie să apeși pe acest buton ca să îți apară ceva special creat pentru tine</div>
+    <div id="arrow">↓</div>
+    <canvas id="scratchCanvas"></canvas>
+  </div>
+
+  <div id="roseFlower">
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+    <div class="rose-petal"></div>
+  </div>
+
+  <div id="poetryPaper">
+    <button id="closePoetry">×</button>
+    <div id="poetryTitle">Te iubesc cum lumea n-a știut</div>
+    <div id="poetryContent">Nu poate-o lume să iubească
+Aşa cum eu pot să iubesc.
+Nu poate-o lume să privească
+Cum eu pe tine te privesc.
+
+Nu poate-o lume s-ănţeleagă
+Astfel cum eu te-am înţeles.
+Nu poate-o lume să aleagă
+Cum eu pe tine te-am ales.
+
+Nu poate-o lume să gândească
+Cum eu la tine mă gândesc.
+Nu poate-o lume s-amintească
+Cum eu de tine-mi amintesc.
+
+Nu poate-o lume să traiască
+Mai mult ca dragostea din mine.
+Nu poate-o lume ca să ţină
+Aşa de mult cum ţin la tine.
+
+Şi te iubesc cum lumea n-a ştiut
+Te iubesc până la infinit.
+Ca o lume împreună luată
+Te iubesc cum lumea încă n-a iubit.</div>
+  </div>
+
+  <button id="finalArrow">→</button>
+
+  <div id="finalMessage">
+    Ai ajuns la final! Dă-mi voie să te îmbrățișez acum... dar în realitate.<br><br>
+    Un Valentine's Day minunat să ai, frumoasa mea!
+    <div id="finalHeart">❤️</div>
+  </div>
+
+  <div id="journeyPopup">
+    Dar stai! Ți-am promis că voi continua această mini aplicație. Așa că apasă pe <strong>Continuă călătoria</strong> să vezi ce ți-am pregătit.
+    <br><br>
+    <button id="continueJourneyBtn">Continuă călătoria</button>
+  </div>
+
+  <div id="storyPage">
+    <button id="closeStory">×</button>
+    <div id="storyTitle">Rapunzel și Pădurea Înfiorătoare</div>
+    <div id="storyContent">A fost odată, într-un tărâm îndepărtat numit Miuni, o fată cu părul lung, catifelat și strălucitor, numită Rapunzel. Într-o seară, în drum spre castelul ei, s-a rătăcit printre umbrele unei păduri necunoscute.
+
+Norii acopereau luna, iar copacii păreau că șoptesc nume vechi și uitate. Rapunzel strângea în mâini o eșarfă roșie, singurul semn de acasă pe care-l mai avea, și pășea cu inima bătând repede.
+
+„Trebuie să găsesc drumul înapoi la castel," își spunea ea, privind cărările întunecate care se despărțeau în toate direcțiile. Un vânt rece i-a mișcat părul, aducând cu el un foșnet ciudat dintre tufișuri.
+
+Departe, printre copaci, a zărit o geană de lumină - poate un felinar, poate doar o stea rătăcită. Cu curaj adunat din adâncul sufletului, Rapunzel a făcut un pas hotărât înainte, spre umbra deasă a pădurii înfiorătoare, gata să înfrunte tot ce o aștepta înăuntru...</div>
+    <div style="text-align: center; margin-top: 22px;">
+      <button id="helpRapunzelBtn">Ajut-o pe Rapunzel să treacă de pădurea înfricoșătoare</button>
+    </div>
+  </div>
+
+  <div id="gameScreen">
+    <div id="gameUI">
+      <div id="heartsDisplay">❤️❤️❤️</div>
+      <div id="progressBarContainer"><div id="progressBarFill"></div></div>
+    </div>
+    <canvas id="gameCanvas"></canvas>
+    <div id="gameInstructions">Apasă ecranul ca Rapunzel să sară peste obstacole</div>
+    <div id="gameToast"></div>
+  </div>
+
+  <div id="castleWinPopup">
+    <span class="castleIcon">🏰</span>
+    <div id="castleWinContent">Rapunzel a alergat ultimii pași spre poarta castelului. Acolo, curtea era plină de oameni agitați - gărzi cu torțe aprinse, slujitori cu hărți în mâini - toți gata să pornească în noapte, spre pădurea înfiorătoare, în căutarea ei.
+
+Chiar în mijlocul lor, gata să iasă pe poartă cel dintâi, stătea Kiwi.
+
+Când a zărit-o, s-a oprit brusc, de parcă nu-i venea să creadă. „Rapunzel?! Chiar tu ești?" A traversat curtea în fugă și a strâns-o în brațe. „Tocmai porneam să te caut... nu știi cât m-am temut că nu te voi mai găsi."
+
+În jurul lor, oamenii au izbucnit în strigăte de bucurie, torțele fluturând în semn de ușurare.
+
+Ea i-a zâmbit, cu ochii încă străluc­ind de emoție. „Sunt bine, Kiwi. A fost înfricoșător, dar am știut că trebuie doar să găsesc drumul înapoi la tine."
+
+„Totul e în regulă acum," a spus ea, luându-i mâna. „Suntem din nou împreună, asta contează."
+
+Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-a spus el, îndreptându-se spre poarta castelului. „Trebuie să-ți spun ceva foarte important."
+
+Și așa, ținându-se de mână, în timp ce toți cei din curte răsuflau ușurați, au intrat împreună în castel.</div>
+    <br>
+    <button id="closeCastleWin">Închide</button>
+  </div>
+
+  <div id="gameRulesPopup">
+    Regulile sunt simple: apasă pe ecran ca să o ajuți pe Rapunzel să sară peste obstacole.
+    <br>
+    <button id="startAdventureBtn">Să înceapă aventura</button>
+  </div>
+
+  <div id="countdownOverlay">
+    <div id="countdownNumber">3</div>
+  </div>
+
+  <div id="gameOverPopup">
+    Rapunzel nu a reușit de data asta să treacă prin pădure...<br><br>
+    Dar curajul nu se dă niciodată bătut! Încearcă din nou.
+    <br>
+    <button id="retryGameBtn">Reia jocul</button>
+  </div>
+
+  <div id="ringPopup">
+    <span class="ringEmoji">💍</span>
+  </div>
+
+  <script>
+    // Previne zoom-ul pe dublu tap
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', (e) => {
+      const now = Date.now();
+      if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+      }
+      lastTouchEnd = now;
+    }, false);
+
+    // Inimioare zburătoare
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.innerHTML = '❤️';
+      heart.classList.add('heart');
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (Math.random() * 3 + 3) + 's';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 400);
+
+    const startBtn = document.getElementById('startBtn');
+    const introMessage = document.getElementById('introMessage');
+    const instruction = document.getElementById('scratchInstruction');
+    const scratchArea = document.getElementById('scratchArea');
+    const canvas = document.getElementById('scratchCanvas');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
+    const roseFlower = document.getElementById('roseFlower');
+    const poetryPaper = document.getElementById('poetryPaper');
+    const closePoetry = document.getElementById('closePoetry');
+    const finalArrow = document.getElementById('finalArrow');
+    const finalMessage = document.getElementById('finalMessage');
+    const journeyPopup = document.getElementById('journeyPopup');
+    const continueJourneyBtn = document.getElementById('continueJourneyBtn');
+    const storyPage = document.getElementById('storyPage');
+    const closeStory = document.getElementById('closeStory');
+    const helpRapunzelBtn = document.getElementById('helpRapunzelBtn');
+    const gameScreen = document.getElementById('gameScreen');
+    const gameCanvas = document.getElementById('gameCanvas');
+    const gctx = gameCanvas.getContext('2d');
+    const heartsDisplay = document.getElementById('heartsDisplay');
+    const progressBarFill = document.getElementById('progressBarFill');
+    const gameInstructions = document.getElementById('gameInstructions');
+    const gameToast = document.getElementById('gameToast');
+    const castleWinPopup = document.getElementById('castleWinPopup');
+    const closeCastleWin = document.getElementById('closeCastleWin');
+    const gameRulesPopup = document.getElementById('gameRulesPopup');
+    const startAdventureBtn = document.getElementById('startAdventureBtn');
+    const countdownOverlay = document.getElementById('countdownOverlay');
+    const countdownNumber = document.getElementById('countdownNumber');
+    const gameOverPopup = document.getElementById('gameOverPopup');
+    const retryGameBtn = document.getElementById('retryGameBtn');
+    const ringPopup = document.getElementById('ringPopup');
+
+    let revealedPixels = 0;
+    let totalPixels = 0;
+    let isRevealed = false;
+
+    startBtn.addEventListener('click', () => {
+      startBtn.style.display = 'none';
+      instruction.style.opacity = 1;
+      scratchArea.style.display = 'block';
+
+      const rect = scratchArea.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      
+      ctx.fillStyle = '#ababab';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      totalPixels = canvas.width * canvas.height;
+      revealedPixels = 0;
+      isRevealed = false;
+      roseFlower.style.display = 'none';
+    });
+
+    roseFlower.addEventListener('click', () => {
+      roseFlower.style.transform = 'scale(1.2) rotate(10deg)';
+      setTimeout(() => {
+        roseFlower.style.transform = 'scale(1) rotate(0deg)';
+        poetryPaper.style.display = 'block';
+        poetryPaper.style.animation = 'none';
+        void poetryPaper.offsetHeight;
+        poetryPaper.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+      }, 200);
+    });
+
+    closePoetry.addEventListener('click', () => {
+      poetryPaper.style.display = 'none';
+      finalArrow.style.display = 'none';
+    });
+
+    poetryPaper.addEventListener('scroll', () => {
+      const scrollTop = poetryPaper.scrollTop;
+      const scrollHeight = poetryPaper.scrollHeight;
+      const clientHeight = poetryPaper.clientHeight;
+      
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        finalArrow.style.display = 'block';
+      } else {
+        finalArrow.style.display = 'none';
+      }
+    });
+
+    finalArrow.addEventListener('click', () => {
+      finalArrow.style.display = 'none';
+      poetryPaper.style.display = 'none';
+      
+      finalMessage.style.display = 'block';
+      finalMessage.style.animation = 'none';
+      void finalMessage.offsetHeight;
+      finalMessage.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+
+      setTimeout(() => {
+        finalMessage.style.display = 'none';
+        journeyPopup.style.display = 'block';
+        journeyPopup.style.animation = 'none';
+        void journeyPopup.offsetHeight;
+        journeyPopup.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+      }, 4000);
+    });
+
+    continueJourneyBtn.addEventListener('click', () => {
+      journeyPopup.style.display = 'none';
+      storyPage.style.display = 'block';
+      storyPage.style.animation = 'none';
+      void storyPage.offsetHeight;
+      storyPage.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+    });
+
+    closeStory.addEventListener('click', () => {
+      storyPage.style.display = 'none';
+    });
+
+    helpRapunzelBtn.addEventListener('click', () => {
+      storyPage.style.display = 'none';
+      gameRulesPopup.style.display = 'block';
+      gameRulesPopup.style.animation = 'none';
+      void gameRulesPopup.offsetHeight;
+      gameRulesPopup.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+    });
+
+    startAdventureBtn.addEventListener('click', () => {
+      gameRulesPopup.style.display = 'none';
+      prepareGame();
+      runCountdown();
+    });
+
+    retryGameBtn.addEventListener('click', () => {
+      gameOverPopup.style.display = 'none';
+      prepareGame();
+      runCountdown();
+    });
+
+    closeCastleWin.addEventListener('click', () => {
+      castleWinPopup.style.display = 'none';
+      introMessage.style.display = 'none';
+      instruction.style.display = 'none';
+      scratchArea.style.display = 'none';
+      roseFlower.style.display = 'none';
+      ringPopup.style.display = 'block';
+      ringPopup.style.animation = 'none';
+      void ringPopup.offsetHeight;
+      ringPopup.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+    });
+
+    let isDrawing = false;
+
+    function getLocalPos(e) {
+      const rect = canvas.getBoundingClientRect();
+      const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+      const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      return { x, y };
+    }
+
+    function scratch(x, y) {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.beginPath();
+      ctx.arc(x, y, 30, 0, Math.PI * 2);
+      ctx.fill();
+      revealedPixels += Math.PI * 30 * 30;
+      
+      if (!isRevealed && revealedPixels / totalPixels >= 0.7) {
+        isRevealed = true;
+        roseFlower.style.display = 'block';
+      }
+    }
+
+    canvas.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      isDrawing = true;
+      const pos = getLocalPos(e);
+      scratch(pos.x, pos.y);
+    }, { passive: false });
+
+    canvas.addEventListener('touchmove', (e) => {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const pos = getLocalPos(e);
+      scratch(pos.x, pos.y);
+    }, { passive: false });
+
+    canvas.addEventListener('touchend', () => {
+      isDrawing = false;
+    });
+
+    canvas.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      isDrawing = true;
+      const pos = getLocalPos(e);
+      scratch(pos.x, pos.y);
+    });
+
+    canvas.addEventListener('mousemove', (e) => {
+      if (!isDrawing) return;
+      e.preventDefault();
+      const pos = getLocalPos(e);
+      scratch(pos.x, pos.y);
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDrawing = false;
+    });
+
+    /* ================= JOC: RUNNER ================= */
+    let gameRunning = false;
+    let animId = null;
+
+    // Personaj original desenat (SVG) - nu se bazează pe nicio fotografie
+    const rapunzelSvgMarkup = `
+      <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hairGradL" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8a5a34"/>
+            <stop offset="0.5" stop-color="#5c3a20"/>
+            <stop offset="1" stop-color="#3a2414"/>
+          </linearGradient>
+          <linearGradient id="hairGradR" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#8a5a34"/>
+            <stop offset="0.5" stop-color="#5c3a20"/>
+            <stop offset="1" stop-color="#3a2414"/>
+          </linearGradient>
+        </defs>
+        <path d="M28,34 Q16,80 22,136 Q35,140 41,136 Q34,90 43,39 Z" fill="url(#hairGradL)"/>
+        <path d="M72,34 Q84,80 78,136 Q65,140 59,136 Q66,90 57,39 Z" fill="url(#hairGradR)"/>
+        <path d="M32,40 Q26,75 30,120" stroke="#f0dcc0" stroke-width="1.6" opacity="0.4" fill="none" stroke-linecap="round"/>
+        <path d="M36,42 Q31,80 35,128" stroke="#fceec2" stroke-width="1.2" opacity="0.35" fill="none" stroke-linecap="round"/>
+        <path d="M68,40 Q74,75 70,120" stroke="#f0dcc0" stroke-width="1.6" opacity="0.4" fill="none" stroke-linecap="round"/>
+        <path d="M64,42 Q69,80 65,128" stroke="#fceec2" stroke-width="1.2" opacity="0.35" fill="none" stroke-linecap="round"/>
+        <rect x="38" y="95" width="10" height="35" rx="5" fill="#f2c9a0"/>
+        <rect x="55" y="95" width="10" height="35" rx="5" fill="#f2c9a0"/>
+        <path d="M35,55 Q50,45 65,55 L70,100 Q50,110 30,100 Z" fill="#ffb6c9"/>
+        <path d="M35,55 Q50,45 65,55 L67,70 Q50,78 33,70 Z" fill="#ff9ec7"/>
+        <rect x="25" y="58" width="9" height="30" rx="4" fill="#f2c9a0" transform="rotate(-15 29 58)"/>
+        <rect x="66" y="58" width="9" height="30" rx="4" fill="#f2c9a0" transform="rotate(15 71 58)"/>
+        <path d="M25,55 Q20,65 27,75 L35,68 Q32,60 33,55 Z" fill="#ffb6c9"/>
+        <path d="M75,55 Q80,65 73,75 L65,68 Q68,60 67,55 Z" fill="#ffb6c9"/>
+        <circle cx="50" cy="35" r="18" fill="#f7d3ab"/>
+        <path d="M31,29 Q50,8 69,29 Q69,18 50,13 Q31,18 31,29 Z" fill="url(#hairGradL)"/>
+        <path d="M50,13 Q58,17 61,26" stroke="#f0dcc0" stroke-width="1.4" opacity="0.4" fill="none" stroke-linecap="round"/>
+        <path d="M29,31 Q26,50 32,56 Q28,40 33,29 Z" fill="url(#hairGradL)"/>
+        <path d="M71,31 Q74,50 68,56 Q72,40 67,29 Z" fill="url(#hairGradR)"/>
+        <circle cx="43" cy="36" r="2" fill="#4a2d17"/>
+        <circle cx="57" cy="36" r="2" fill="#4a2d17"/>
+        <path d="M44,44 Q50,48 56,44" stroke="#c76b6b" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <circle cx="40" cy="40" r="3" fill="#ffb6c9" opacity="0.5"/>
+        <circle cx="60" cy="40" r="3" fill="#ffb6c9" opacity="0.5"/>
+      </svg>
+    `;
+    const rapunzelImg = new Image();
+    let rapunzelReady = false;
+    rapunzelImg.onload = () => { rapunzelReady = true; };
+    rapunzelImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(rapunzelSvgMarkup);
+
+    const gameState = {
+      player: { x: 50, y: 0, w: 34, h: 44, vy: 0, jumping: false },
+      groundY: 0,
+      gravity: 0.7,
+      jumpForce: -13,
+      speed: 4.2,
+      distance: 0,
+      totalDistance: 5200,
+      obstacles: [],
+      spawnTimer: 0,
+      spawnInterval: 90,
+      hearts: 3,
+      invulnerable: false,
+      invulnerableTimer: 0,
+      resetting: false,
+      resetTimer: 0,
+      won: false,
+      farTreeOffset: 0,
+      nearTreeOffset: 0
+    };
+
+    function resizeGameCanvas() {
+      const rect = gameCanvas.getBoundingClientRect();
+      gameCanvas.width = rect.width;
+      gameCanvas.height = rect.height;
+      gameState.groundY = gameCanvas.height - 36;
+      gameState.player.y = gameState.groundY - gameState.player.h;
+    }
+
+    function prepareGame() {
+      gameScreen.style.display = 'flex';
+      resizeGameCanvas();
+
+      gameState.player.y = gameState.groundY - gameState.player.h;
+      gameState.player.vy = 0;
+      gameState.player.jumping = false;
+      gameState.distance = 0;
+      gameState.obstacles = [];
+      gameState.spawnTimer = 0;
+      gameState.hearts = 3;
+      gameState.invulnerable = false;
+      gameState.invulnerableTimer = 0;
+      gameState.won = false;
+      updateHeartsDisplay();
+      progressBarFill.style.width = '0%';
+      gameInstructions.style.opacity = 0.9;
+      gameToast.style.display = 'none';
+
+      gameRunning = false;
+      if (animId) cancelAnimationFrame(animId);
+      drawBackground();
+      drawCastle(0);
+      drawObstacles();
+      drawPlayer();
+    }
+
+    function runCountdown() {
+      countdownOverlay.style.display = 'flex';
+      const steps = ['3', '2', '1', 'Start!'];
+      let i = 0;
+      countdownNumber.textContent = steps[i];
+      const interval = setInterval(() => {
+        i++;
+        if (i < steps.length) {
+          countdownNumber.textContent = steps[i];
+        } else {
+          clearInterval(interval);
+          countdownOverlay.style.display = 'none';
+          gameRunning = true;
+          gameLoop();
+        }
+      }, 700);
+    }
+
+    function updateHeartsDisplay() {
+      let s = '';
+      for (let i = 0; i < 3; i++) s += i < gameState.hearts ? '❤️' : '🤍';
+      heartsDisplay.textContent = s;
+    }
+
+    function jump() {
+      if (!gameState.player.jumping && gameRunning && !gameState.won) {
+        gameState.player.vy = gameState.jumpForce;
+        gameState.player.jumping = true;
+        gameInstructions.style.opacity = 0;
+      }
+    }
+
+    gameScreen.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      jump();
+    }, { passive: false });
+
+    gameScreen.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      jump();
+    });
+
+    function showToast(msg, duration) {
+      gameToast.textContent = msg;
+      gameToast.style.display = 'block';
+      setTimeout(() => { gameToast.style.display = 'none'; }, duration);
+    }
+
+    function spawnObstacle() {
+      const h = 28 + Math.random() * 26;
+      const w = 24 + Math.random() * 14;
+      gameState.obstacles.push({ x: gameCanvas.width + 20, y: gameState.groundY - h, w: w, h: h });
+    }
+
+    function drawBackground() {
+      const w = gameCanvas.width, h = gameCanvas.height;
+      const grad = gctx.createLinearGradient(0, 0, 0, h);
+      grad.addColorStop(0, '#241a3d');
+      grad.addColorStop(0.55, '#2f2350');
+      grad.addColorStop(1, '#1c3320');
+      gctx.fillStyle = grad;
+      gctx.fillRect(0, 0, w, h);
+
+      // stele
+      gctx.fillStyle = 'rgba(255,255,255,0.5)';
+      for (let i = 0; i < 18; i++) {
+        const sx = (i * 53 + 20) % w;
+        const sy = (i * 29) % (h * 0.4) + 10;
+        gctx.fillRect(sx, sy, 2, 2);
+      }
+
+      // copaci îndepărtați (parallax lent)
+      gameState.farTreeOffset = (gameState.farTreeOffset + gameState.speed * 0.3) % 90;
+      gctx.fillStyle = '#241f3a';
+      for (let x = -90 + -gameState.farTreeOffset; x < w + 90; x += 90) {
+        gctx.beginPath();
+        gctx.moveTo(x, gameState.groundY - 10);
+        gctx.lineTo(x + 30, gameState.groundY - 70);
+        gctx.lineTo(x + 60, gameState.groundY - 10);
+        gctx.closePath();
+        gctx.fill();
+      }
+
+      // copaci apropiați (parallax rapid)
+      gameState.nearTreeOffset = (gameState.nearTreeOffset + gameState.speed * 0.8) % 70;
+      gctx.fillStyle = '#16260f';
+      for (let x = -70 + -gameState.nearTreeOffset; x < w + 70; x += 70) {
+        gctx.beginPath();
+        gctx.moveTo(x, gameState.groundY + 4);
+        gctx.lineTo(x + 24, gameState.groundY - 55);
+        gctx.lineTo(x + 48, gameState.groundY + 4);
+        gctx.closePath();
+        gctx.fill();
+      }
+
+      // sol
+      gctx.fillStyle = '#12200d';
+      gctx.fillRect(0, gameState.groundY, w, h - gameState.groundY);
+      gctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      gctx.beginPath();
+      gctx.moveTo(0, gameState.groundY);
+      gctx.lineTo(w, gameState.groundY);
+      gctx.stroke();
+    }
+
+    function drawCastle(progress) {
+      const w = gameCanvas.width;
+      const startX = w + 60;
+      const endX = w - 46;
+      const cx = startX - (startX - endX) * progress;
+      const scale = 0.5 + progress * 1.1;
+      gctx.save();
+      gctx.font = (60 * scale) + 'px serif';
+      gctx.textAlign = 'center';
+      gctx.textBaseline = 'bottom';
+      gctx.globalAlpha = 0.55 + progress * 0.45;
+      gctx.fillText('🏰', cx, gameState.groundY - 4);
+      gctx.restore();
+    }
+
+    function drawPlayer() {
+      const p = gameState.player;
+      if (gameState.invulnerable && Math.floor(gameState.invulnerableTimer / 6) % 2 === 0) {
+        return; // flicker
+      }
+      gctx.save();
+      if (rapunzelReady) {
+        // păstrăm hitbox-ul (p.w x p.h), dar desenăm ilustrația puțin mai mare
+        // pentru ca părul/rochia să nu pară tăiate
+        const drawW = p.w + 22;
+        const drawH = p.h + 20;
+        const drawX = p.x - (drawW - p.w) / 2;
+        const drawY = p.y + p.h - drawH + 6;
+        gctx.drawImage(rapunzelImg, drawX, drawY, drawW, drawH);
+      } else {
+        gctx.font = (p.h + 14) + 'px serif';
+        gctx.textAlign = 'center';
+        gctx.textBaseline = 'bottom';
+        gctx.fillText('👸', p.x + p.w / 2, p.y + p.h + 10);
+      }
+      gctx.restore();
+    }
+
+    function drawObstacles() {
+      gctx.fillStyle = '#3d2a17';
+      gameState.obstacles.forEach(o => {
+        gctx.beginPath();
+        gctx.moveTo(o.x, o.y + o.h);
+        gctx.lineTo(o.x + o.w * 0.5, o.y);
+        gctx.lineTo(o.x + o.w, o.y + o.h);
+        gctx.closePath();
+        gctx.fill();
+      });
+    }
+
+    function rectsOverlap(a, b) {
+      return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+    }
+
+    function loseHeart() {
+      gameState.hearts--;
+      updateHeartsDisplay();
+      gameState.invulnerable = true;
+      gameState.invulnerableTimer = 90;
+
+      if (gameState.hearts <= 0) {
+        gameRunning = false;
+        setTimeout(() => {
+          gameScreen.style.display = 'none';
+          gameOverPopup.style.display = 'block';
+          gameOverPopup.style.animation = 'none';
+          void gameOverPopup.offsetHeight;
+          gameOverPopup.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+        }, 400);
+      }
+    }
+
+    function gameLoop() {
+      if (!gameRunning) return;
+      const p = gameState.player;
+
+      if (!gameState.won) {
+        // fizică
+        p.vy += gameState.gravity;
+        p.y += p.vy;
+        if (p.y >= gameState.groundY - p.h) {
+          p.y = gameState.groundY - p.h;
+          p.vy = 0;
+          p.jumping = false;
+        }
+
+        // obstacole
+        gameState.spawnTimer++;
+        if (gameState.spawnTimer >= gameState.spawnInterval) {
+          gameState.spawnTimer = 0;
+          gameState.spawnInterval = 70 + Math.random() * 55;
+          spawnObstacle();
+        }
+
+        gameState.obstacles.forEach(o => { o.x -= gameState.speed; });
+        gameState.obstacles = gameState.obstacles.filter(o => o.x + o.w > -10);
+
+        if (gameState.invulnerable) {
+          gameState.invulnerableTimer--;
+          if (gameState.invulnerableTimer <= 0) gameState.invulnerable = false;
+        } else {
+          const playerBox = { x: p.x + 6, y: p.y + 6, w: p.w - 12, h: p.h - 6 };
+          for (const o of gameState.obstacles) {
+            if (rectsOverlap(playerBox, o)) {
+              loseHeart();
+              o.x = -999;
+              break;
+            }
+          }
+        }
+
+        if (!gameRunning) {
+          // jocul tocmai s-a oprit (game over) - desenăm ultimul cadru și ieșim
+          drawBackground();
+          drawCastle(Math.min(gameState.distance / gameState.totalDistance, 1));
+          drawObstacles();
+          drawPlayer();
+          return;
+        }
+
+        gameState.distance += gameState.speed;
+        const progress = Math.min(gameState.distance / gameState.totalDistance, 1);
+        progressBarFill.style.width = (progress * 100) + '%';
+
+        if (progress >= 1) {
+          gameState.won = true;
+          setTimeout(() => {
+            gameRunning = false;
+            gameScreen.style.display = 'none';
+            castleWinPopup.style.display = 'block';
+            castleWinPopup.style.animation = 'none';
+            void castleWinPopup.offsetHeight;
+            castleWinPopup.style.animation = 'gentleReveal 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards';
+          }, 500);
+        }
+      }
+
+      // desenare
+      drawBackground();
+      const progressNow = Math.min(gameState.distance / gameState.totalDistance, 1);
+      drawCastle(progressNow);
+      drawObstacles();
+      drawPlayer();
+
+      if (gameRunning) {
+        animId = requestAnimationFrame(gameLoop);
+      }
+    }
+
+    window.addEventListener('resize', () => {
+      if (gameScreen.style.display === 'flex') {
+        resizeGameCanvas();
+      }
+    });
+  </script>
+</body>
+</html>
