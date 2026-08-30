@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Pentru frumoasa mea ❤️</title>
+  <title>Pentru iubita mea ❤️</title>
   <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='75' font-size='80'%3E❤️%3C/text%3E%3C/svg%3E">
   <style>
     * {
@@ -809,7 +809,7 @@ Când a zărit-o, s-a oprit brusc, de parcă nu-i venea să creadă. „Rapunzel
 
 În jurul lor, oamenii au izbucnit în strigăte de bucurie, torțele fluturând în semn de ușurare.
 
-Ea i-a zâmbit, cu ochii încă străluc­ind de emoție. „Sunt bine, Kiwi. A fost înfricoșător, dar am știut că trebuie doar să găsesc drumul înapoi la tine."
+Ea i-a zâmbit, cu ochii încă strălucind de emoție. „Sunt bine, Kiwi. A fost înfricoșător, dar am știut că trebuie doar să găsesc drumul înapoi la tine."
 
 „Totul e în regulă acum," a spus ea, luându-i mâna. „Suntem din nou împreună, asta contează."
 
@@ -897,9 +897,8 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
     const retryGameBtn = document.getElementById('retryGameBtn');
     const ringPopup = document.getElementById('ringPopup');
 
-    let revealedPixels = 0;
-    let totalPixels = 0;
     let isRevealed = false;
+    let scratchCheckCounter = 0;
 
     startBtn.addEventListener('click', () => {
       startBtn.style.display = 'none';
@@ -913,9 +912,8 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
       ctx.fillStyle = '#ababab';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       
-      totalPixels = canvas.width * canvas.height;
-      revealedPixels = 0;
       isRevealed = false;
+      scratchCheckCounter = 0;
       roseFlower.style.display = 'none';
     });
 
@@ -1025,9 +1023,27 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
       ctx.beginPath();
       ctx.arc(x, y, 30, 0, Math.PI * 2);
       ctx.fill();
-      revealedPixels += Math.PI * 30 * 30;
-      
-      if (!isRevealed && revealedPixels / totalPixels >= 0.7) {
+
+      scratchCheckCounter++;
+      if (!isRevealed && scratchCheckCounter % 4 === 0) {
+        checkRevealPercentage();
+      }
+    }
+
+    function checkRevealPercentage() {
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let transparent = 0;
+      let sampled = 0;
+      // eșantionăm din 3 în 3 pixeli pe fiecare axă pentru performanță
+      const stride = 3;
+      for (let y = 0; y < canvas.height; y += stride) {
+        for (let x = 0; x < canvas.width; x += stride) {
+          const idx = (y * canvas.width + x) * 4 + 3; // canal alpha
+          sampled++;
+          if (imgData[idx] === 0) transparent++;
+        }
+      }
+      if (!isRevealed && sampled > 0 && transparent / sampled >= 0.9) {
         isRevealed = true;
         roseFlower.style.display = 'block';
       }
@@ -1073,52 +1089,6 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
     let gameRunning = false;
     let animId = null;
 
-    // Personaj original desenat (SVG) - nu se bazează pe nicio fotografie
-    const rapunzelSvgMarkup = `
-      <svg viewBox="0 0 100 140" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="hairGradL" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#8a5a34"/>
-            <stop offset="0.5" stop-color="#5c3a20"/>
-            <stop offset="1" stop-color="#3a2414"/>
-          </linearGradient>
-          <linearGradient id="hairGradR" x1="1" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#8a5a34"/>
-            <stop offset="0.5" stop-color="#5c3a20"/>
-            <stop offset="1" stop-color="#3a2414"/>
-          </linearGradient>
-        </defs>
-        <path d="M28,34 Q16,80 22,136 Q35,140 41,136 Q34,90 43,39 Z" fill="url(#hairGradL)"/>
-        <path d="M72,34 Q84,80 78,136 Q65,140 59,136 Q66,90 57,39 Z" fill="url(#hairGradR)"/>
-        <path d="M32,40 Q26,75 30,120" stroke="#f0dcc0" stroke-width="1.6" opacity="0.4" fill="none" stroke-linecap="round"/>
-        <path d="M36,42 Q31,80 35,128" stroke="#fceec2" stroke-width="1.2" opacity="0.35" fill="none" stroke-linecap="round"/>
-        <path d="M68,40 Q74,75 70,120" stroke="#f0dcc0" stroke-width="1.6" opacity="0.4" fill="none" stroke-linecap="round"/>
-        <path d="M64,42 Q69,80 65,128" stroke="#fceec2" stroke-width="1.2" opacity="0.35" fill="none" stroke-linecap="round"/>
-        <rect x="38" y="95" width="10" height="35" rx="5" fill="#f2c9a0"/>
-        <rect x="55" y="95" width="10" height="35" rx="5" fill="#f2c9a0"/>
-        <path d="M35,55 Q50,45 65,55 L70,100 Q50,110 30,100 Z" fill="#ffb6c9"/>
-        <path d="M35,55 Q50,45 65,55 L67,70 Q50,78 33,70 Z" fill="#ff9ec7"/>
-        <rect x="25" y="58" width="9" height="30" rx="4" fill="#f2c9a0" transform="rotate(-15 29 58)"/>
-        <rect x="66" y="58" width="9" height="30" rx="4" fill="#f2c9a0" transform="rotate(15 71 58)"/>
-        <path d="M25,55 Q20,65 27,75 L35,68 Q32,60 33,55 Z" fill="#ffb6c9"/>
-        <path d="M75,55 Q80,65 73,75 L65,68 Q68,60 67,55 Z" fill="#ffb6c9"/>
-        <circle cx="50" cy="35" r="18" fill="#f7d3ab"/>
-        <path d="M31,29 Q50,8 69,29 Q69,18 50,13 Q31,18 31,29 Z" fill="url(#hairGradL)"/>
-        <path d="M50,13 Q58,17 61,26" stroke="#f0dcc0" stroke-width="1.4" opacity="0.4" fill="none" stroke-linecap="round"/>
-        <path d="M29,31 Q26,50 32,56 Q28,40 33,29 Z" fill="url(#hairGradL)"/>
-        <path d="M71,31 Q74,50 68,56 Q72,40 67,29 Z" fill="url(#hairGradR)"/>
-        <circle cx="43" cy="36" r="2" fill="#4a2d17"/>
-        <circle cx="57" cy="36" r="2" fill="#4a2d17"/>
-        <path d="M44,44 Q50,48 56,44" stroke="#c76b6b" stroke-width="2" fill="none" stroke-linecap="round"/>
-        <circle cx="40" cy="40" r="3" fill="#ffb6c9" opacity="0.5"/>
-        <circle cx="60" cy="40" r="3" fill="#ffb6c9" opacity="0.5"/>
-      </svg>
-    `;
-    const rapunzelImg = new Image();
-    let rapunzelReady = false;
-    rapunzelImg.onload = () => { rapunzelReady = true; };
-    rapunzelImg.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(rapunzelSvgMarkup);
-
     const gameState = {
       player: { x: 50, y: 0, w: 34, h: 44, vy: 0, jumping: false },
       groundY: 0,
@@ -1133,8 +1103,6 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
       hearts: 3,
       invulnerable: false,
       invulnerableTimer: 0,
-      resetting: false,
-      resetTimer: 0,
       won: false,
       farTreeOffset: 0,
       nearTreeOffset: 0
@@ -1232,23 +1200,21 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
     function drawBackground() {
       const w = gameCanvas.width, h = gameCanvas.height;
       const grad = gctx.createLinearGradient(0, 0, 0, h);
-      grad.addColorStop(0, '#241a3d');
-      grad.addColorStop(0.55, '#2f2350');
-      grad.addColorStop(1, '#1c3320');
+      grad.addColorStop(0, '#4a3b6e');
+      grad.addColorStop(0.55, '#5a4a80');
+      grad.addColorStop(1, '#3a5c3a');
       gctx.fillStyle = grad;
       gctx.fillRect(0, 0, w, h);
 
-      // stele
-      gctx.fillStyle = 'rgba(255,255,255,0.5)';
+      gctx.fillStyle = 'rgba(255,255,255,0.6)';
       for (let i = 0; i < 18; i++) {
         const sx = (i * 53 + 20) % w;
         const sy = (i * 29) % (h * 0.4) + 10;
         gctx.fillRect(sx, sy, 2, 2);
       }
 
-      // copaci îndepărtați (parallax lent)
       gameState.farTreeOffset = (gameState.farTreeOffset + gameState.speed * 0.3) % 90;
-      gctx.fillStyle = '#241f3a';
+      gctx.fillStyle = '#4a4270';
       for (let x = -90 + -gameState.farTreeOffset; x < w + 90; x += 90) {
         gctx.beginPath();
         gctx.moveTo(x, gameState.groundY - 10);
@@ -1258,9 +1224,8 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
         gctx.fill();
       }
 
-      // copaci apropiați (parallax rapid)
       gameState.nearTreeOffset = (gameState.nearTreeOffset + gameState.speed * 0.8) % 70;
-      gctx.fillStyle = '#16260f';
+      gctx.fillStyle = '#2d4a24';
       for (let x = -70 + -gameState.nearTreeOffset; x < w + 70; x += 70) {
         gctx.beginPath();
         gctx.moveTo(x, gameState.groundY + 4);
@@ -1270,10 +1235,9 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
         gctx.fill();
       }
 
-      // sol
-      gctx.fillStyle = '#12200d';
+      gctx.fillStyle = '#233d1c';
       gctx.fillRect(0, gameState.groundY, w, h - gameState.groundY);
-      gctx.strokeStyle = 'rgba(255,255,255,0.15)';
+      gctx.strokeStyle = 'rgba(255,255,255,0.2)';
       gctx.beginPath();
       gctx.moveTo(0, gameState.groundY);
       gctx.lineTo(w, gameState.groundY);
@@ -1301,32 +1265,30 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
         return; // flicker
       }
       gctx.save();
-      if (rapunzelReady) {
-        // păstrăm hitbox-ul (p.w x p.h), dar desenăm ilustrația puțin mai mare
-        // pentru ca părul/rochia să nu pară tăiate
-        const drawW = p.w + 22;
-        const drawH = p.h + 20;
-        const drawX = p.x - (drawW - p.w) / 2;
-        const drawY = p.y + p.h - drawH + 6;
-        gctx.drawImage(rapunzelImg, drawX, drawY, drawW, drawH);
-      } else {
-        gctx.font = (p.h + 14) + 'px serif';
-        gctx.textAlign = 'center';
-        gctx.textBaseline = 'bottom';
-        gctx.fillText('👸', p.x + p.w / 2, p.y + p.h + 10);
-      }
+      gctx.font = (p.h + 14) + 'px serif';
+      gctx.textAlign = 'center';
+      gctx.textBaseline = 'bottom';
+      gctx.fillText('👸', p.x + p.w / 2, p.y + p.h + 10);
       gctx.restore();
     }
 
     function drawObstacles() {
-      gctx.fillStyle = '#3d2a17';
       gameState.obstacles.forEach(o => {
+        gctx.save();
+        gctx.shadowColor = 'rgba(0,0,0,0.4)';
+        gctx.shadowBlur = 4;
+        gctx.shadowOffsetY = 2;
+        gctx.fillStyle = '#ffb347';
+        gctx.strokeStyle = '#7a3f0a';
+        gctx.lineWidth = 2;
         gctx.beginPath();
         gctx.moveTo(o.x, o.y + o.h);
         gctx.lineTo(o.x + o.w * 0.5, o.y);
         gctx.lineTo(o.x + o.w, o.y + o.h);
         gctx.closePath();
         gctx.fill();
+        gctx.stroke();
+        gctx.restore();
       });
     }
 
@@ -1357,7 +1319,6 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
       const p = gameState.player;
 
       if (!gameState.won) {
-        // fizică
         p.vy += gameState.gravity;
         p.y += p.vy;
         if (p.y >= gameState.groundY - p.h) {
@@ -1366,7 +1327,6 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
           p.jumping = false;
         }
 
-        // obstacole
         gameState.spawnTimer++;
         if (gameState.spawnTimer >= gameState.spawnInterval) {
           gameState.spawnTimer = 0;
@@ -1392,7 +1352,6 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
         }
 
         if (!gameRunning) {
-          // jocul tocmai s-a oprit (game over) - desenăm ultimul cadru și ieșim
           drawBackground();
           drawCastle(Math.min(gameState.distance / gameState.totalDistance, 1));
           drawObstacles();
@@ -1417,7 +1376,6 @@ Kiwi a strâns-o ușor de mână, cu ochii încă plini de emoție. „Vino," i-
         }
       }
 
-      // desenare
       drawBackground();
       const progressNow = Math.min(gameState.distance / gameState.totalDistance, 1);
       drawCastle(progressNow);
